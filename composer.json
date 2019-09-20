@@ -1,0 +1,13 @@
+{
+    "name": "sjje/kafka-s",
+    "authors": [
+        {
+            "name": "sjje",
+            "email": "sjje0x0@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "sjje/rdkafka-ide-helper": "dev-master"
+    }
+}
