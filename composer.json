@@ -9,7 +9,8 @@
     ],
     "license": "MIT",
     "require": {
-        "pimple/pimple": "^3.0"
+        "pimple/pimple": "^3.0",
+        "symfony/console": "^3.4.31"
     },
     "require-dev": {
         "kwn/php-rdkafka-stubs": "^1.3"

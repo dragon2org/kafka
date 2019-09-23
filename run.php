@@ -19,14 +19,13 @@ $config = [
     'queue' => 'alikafka_mini_program_publish_test1_4',
 ];
 
-$container = new ServiceContainer($config);
+$app = new \SEKafka\Queue\Application($config);
 
-$conc = new \SEKafka\Queue\KafkaConnector($container);
-$queue = $conc->connect();
+
 class a{
     public $bb = '123';
 }
-$queue->push(['class'=> 123123], ['xxx' => 123]);
+$app['kafka.queue']->push(['class'=> 123123], ['xxx' => 123]);
 echo 'ok';die;
 
 $container['config'] = [
