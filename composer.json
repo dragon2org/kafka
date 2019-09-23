@@ -1,13 +1,30 @@
 {
     "name": "sjje/kafka-s",
+    "description": "kafka SDK",
     "authors": [
         {
             "name": "sjje",
             "email": "sjje0x0@gmail.com"
         }
     ],
-    "require": {},
+    "license": "MIT",
+    "require": {
+        "pimple/pimple": "^3.0"
+    },
     "require-dev": {
-        "sjje/rdkafka-ide-helper": "dev-master"
+        "kwn/php-rdkafka-stubs": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SEKafka\\": "src/"
+        },
+        "files": [
+            "src/Kernel/Support/Helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SEKafka\\Tests\\": "tests/"
+        }
     }
 }
