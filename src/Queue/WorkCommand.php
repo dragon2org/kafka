@@ -35,7 +35,7 @@ class WorkCommand extends Command
             'KAFKA_SASL_PLAIN_PASSWORD' => '24tzhnjU3',
 
             'log_level' => LOG_DEBUG,
-            'debug' => 'consumer',
+            'debug' => 'all',
             'group.id' => 'CID_alikafka_mini_program_publish_common_test',
             'brokers' => 'docker.for.mac.localhost:9092',
             'queue' => 'alikafka_mini_program_publish_test1_4',

@@ -135,7 +135,6 @@ class KafkaQueue extends Queue
             if ($message === null) {
                 return null;
             }
-
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
                     return new KafkaJob(
@@ -144,6 +143,7 @@ class KafkaQueue extends Queue
                     );
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:
+                    echo "Timed out\n";
                     break;
                 default:
                     throw new QueueKafkaException($message->errstr(), $message->err);
