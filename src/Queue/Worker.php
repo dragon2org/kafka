@@ -5,11 +5,10 @@ namespace SEKafka\Queue;
 
 
 use Pimple\Container;
+use Symfony\Component\VarDumper\VarDumper;
 
 class Worker
 {
-    protected $manager;
-
     protected $container;
 
     public function __construct(Container $pimple)
@@ -17,9 +16,9 @@ class Worker
         $this->container = $pimple;
     }
 
-    public function getNextJob($connectionName, $queue)
+    public function getNextJob($connection)
     {
-
+        $job = $connection->pop();
     }
 
     public function runJob()

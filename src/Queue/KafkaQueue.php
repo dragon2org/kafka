@@ -7,6 +7,7 @@ use ErrorException;
 use Exception;
 use SEKafka\Exceptions\QueueKafkaException;
 use SEKafka\Kernel\Support\Queue;
+use Symfony\Component\VarDumper\VarDumper;
 
 class KafkaQueue extends Queue
 {
@@ -130,13 +131,14 @@ class KafkaQueue extends Queue
                 $this->consumer->subscribe($this->subscribedQueueNames);
             }
 
-            $message = $this->consumer->consume(1000);
+            $message = $this->consumer->consume(10000);
 
             if ($message === null) {
                 return null;
             }
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
+                    file_put_contents('message.log', serialize($message));
                     return new KafkaJob(
                         $this->container, $this, $message,
                         $this->connectionName, $queue ?: $this->defaultQueue

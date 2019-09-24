@@ -15,7 +15,6 @@ abstract class Queue implements QueueContract
     /**
      * The IoC container instance.
      *
-     * @var \Illuminate\Container\Container
      */
     protected $container;
 
@@ -124,10 +123,6 @@ abstract class Queue implements QueueContract
         $payload = $this->withCreatePayloadHooks($queue, [
             'displayName' => $this->getDisplayName($job),
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
-            'maxTries' => $job->tries ? $job->tries : null,
-            'delay' => $this->getJobRetryDelay($job),
-            'timeout' => $job->timeout ? $job->timeout: null,
-            'timeoutAt' => $this->getJobExpiration($job),
             'data' => [
                 'commandName' => $job,
                 'command' => $job,

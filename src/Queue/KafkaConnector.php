@@ -37,7 +37,7 @@ class KafkaConnector
         $conf->set('group.id', $config->get('group.id'));
         $conf->set('metadata.broker.list', $config->get('brokers'));
         $conf->set('enable.auto.commit', 'false');
-        $conf->set('offset.store.method', 'broker');
+       // $conf->set('offset.store.method', $config->get('offset.store.method'));
         $conf->setDefaultTopicConf($topicConf);
 
         $consumer = $this->container->raw('consumer');
