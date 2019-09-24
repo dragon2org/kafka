@@ -53,7 +53,7 @@ class KafkaJob
 
             $command = $this->unserialize($payload);
 
-            $command->playload();
+            $command->handle();
 
             $this->delete();
         } catch (Exception $exception) {

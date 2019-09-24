@@ -28,7 +28,7 @@ class QueueTest extends TestCase
         $queue = $app['kafka.queue'];
 
         $worker = new Worker($app);
-//        $job = $worker->getNextJob($queue);
+        $job = $worker->getNextJob($queue);
 
     }
 

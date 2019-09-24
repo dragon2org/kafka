@@ -18,7 +18,9 @@ class Worker
 
     public function getNextJob($connection)
     {
-        $job = $connection->pop();
+        if (! is_null($job = $connection->pop())) {
+            return $job;
+        }
     }
 
     public function runJob()
