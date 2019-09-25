@@ -43,7 +43,7 @@ class KafkaConnector
         $consumer = $this->container->raw('consumer');
         $consumer = call_user_func($consumer, $this->container, $conf);
 
-        return new KafkaQueue(
+        return new SEKafkaQueue(
             $producer,
             $consumer,
             $config
