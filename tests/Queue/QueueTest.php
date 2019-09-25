@@ -15,7 +15,6 @@ class QueueTest extends TestCase
     {
         $app = new Application($this->getConfig());
         $queue = $app['kafka.queue'];
-
         $playload = [
             'aa' => 'this'
         ];
@@ -26,10 +25,8 @@ class QueueTest extends TestCase
     {
         $app = new Application($this->getConfig());
         $queue = $app['kafka.queue'];
-
-        $worker = new Worker($app);
-        $job = $worker->getNextJob($queue);
-
+        $job = $queue->pop();
+        dd($job);
     }
 
     public function testMockJob()

@@ -9,7 +9,7 @@ use RdKafka\Message;
 use SEKafka\Exceptions\QueueKafkaException;
 use SEKafka\Kernel\Support\Str;
 
-class KafkaJob
+class SEKafkaJob
 {
     /**
      * @var KafkaQueue
@@ -33,12 +33,10 @@ class KafkaJob
      * @param $connectionName
      * @param $queue
      */
-    public function __construct(Container $container, KafkaQueue $connection, Message $message, $connectionName, $queue)
+    public function __construct(Container $container, KafkaQueue $connection, Message $message, $queue)
     {
-        $this->container = $container;
         $this->connection = $connection;
         $this->message = $message;
-        $this->connectionName = $connectionName;
         $this->queue = $queue;
     }
 

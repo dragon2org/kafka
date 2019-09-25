@@ -11,7 +11,6 @@ use SEKafka\Kernel\Contract\Queue as QueueContract;
 abstract class Queue implements QueueContract
 {
 
-
     /**
      * The IoC container instance.
      *

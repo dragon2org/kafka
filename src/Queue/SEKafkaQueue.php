@@ -82,6 +82,46 @@ class SEKafkaQueue
     }
 
     /**
+     * Pop the next job off of the queue.
+     *
+     * @param string|null $queue
+     *
+     * @throws QueueKafkaException
+     *
+     * @return \Illuminate\Queue\Jobs\Job|null
+     */
+    public function pop($queue = null)
+    {
+        try {
+            $queue = $this->getQueueName($queue);
+            if (!in_array($queue, $this->subscribedQueueNames)) {
+                $this->subscribedQueueNames[] = $queue;
+                $this->consumer->subscribe($this->subscribedQueueNames);
+            }
+            $message = $this->consumer->consume(10000);
+
+            if ($message === null) {
+                return null;
+            }
+            switch ($message->err) {
+                case RD_KAFKA_RESP_ERR_NO_ERROR:
+                    return new SEKafkaJob(
+                        $this, $message,
+                        $this->connectionName, $queue ?: $this->defaultQueue
+                    );
+                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                case RD_KAFKA_RESP_ERR__TIMED_OUT:
+                    echo "Timed out\n";
+                    break;
+                default:
+                    throw new QueueKafkaException($message->errstr(), $message->err);
+            }
+        } catch (\RdKafka\Exception $exception) {
+            throw new QueueKafkaException('Could not pop from the queue', 0, $exception);
+        }
+    }
+
+    /**
      * Return a Kafka Topic based on the name
      *
      * @param $queue
@@ -93,6 +133,15 @@ class SEKafkaQueue
         return $this->producer->newTopic($this->getQueueName($queue));
     }
 
+    /**
+     * @param string $queue
+     *
+     * @return string
+     */
+    private function getQueueName($queue)
+    {
+        return $queue ?: $this->defaultQueue;
+    }
 
     protected function createPayload($job, $data = '', $queue = null)
     {
@@ -108,14 +157,13 @@ class SEKafkaQueue
 
     protected function createPayloadArray($job, $queue, $data)
     {
-        if(is_object($job)){
-            return [
-                'displayName' => get_class($job),
-                'id' => $this->getCorrelationId(),
-                'attempts' => 0,
-                'retry' => 0,
-            ];
-        }
+        return [
+            'displayName' => is_object($job) ? get_class($job) : 'array',
+            'id' => $this->getCorrelationId(),
+            'attempts' => 0,
+            'retry' => 0,
+            'data' => serialize($job)
+        ];
     }
 
 

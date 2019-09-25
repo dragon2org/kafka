@@ -45,8 +45,10 @@ class KafkaQueue extends Queue
      * @param \RdKafka\KafkaConsumer $consumer
      * @param array $config
      */
-    public function __construct(\RdKafka\Producer $producer, \RdKafka\KafkaConsumer $consumer, $config)
+    public function __construct($container, \RdKafka\Producer $producer, \RdKafka\KafkaConsumer $consumer, $config)
     {
+        $this->container = $container;
+
         $this->defaultQueue = $config->get('queue');
         $this->sleepOnError = $config->get('sleep_on_error');
 
@@ -130,7 +132,6 @@ class KafkaQueue extends Queue
                 $this->subscribedQueueNames[] = $queue;
                 $this->consumer->subscribe($this->subscribedQueueNames);
             }
-
             $message = $this->consumer->consume(10000);
 
             if ($message === null) {
@@ -138,7 +139,6 @@ class KafkaQueue extends Queue
             }
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                    file_put_contents('message.log', serialize($message));
                     return new KafkaJob(
                         $this->container, $this, $message,
                         $this->connectionName, $queue ?: $this->defaultQueue

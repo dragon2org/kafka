@@ -12,16 +12,16 @@ class ExampleJob implements ShouldQueue
 {
     use Dispatchable, Queueable;
 
-    protected $playload;
+    protected $payload;
 
-    public function __construct($playload)
+    public function __construct($payload)
     {
-        $this->playload = $playload;
+        $this->payload = $payload;
     }
 
-    public function playload()
+    public function payload()
     {
-        print_r($this->playload);
+        file_put_contents('hello.log', 'Hello kafka' . PHP_EOL, FILE_APPEND);
     }
 
 }
